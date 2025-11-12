@@ -18,6 +18,7 @@ class Tablero:
         self.tablero_disparos = np.full((self.filas, self.columnas), " ")
     
     def colocar_barco_plus(tablero, barco):
+        
         tablero_temp = tablero.copy()
         num_max_filas = tablero.shape[0]
         num_max_columnas = tablero.shape[1]
@@ -33,7 +34,35 @@ class Tablero:
             if tablero[pieza] == "O" or tablero[pieza] == "X":
                 print(f"No puedo poner la pieza {pieza} porque hay otro barco")
                 return False
-            tablero_temp[pieza] = "O"
+          
+            # if fila > 0:
+            #     fila_desde = fila - 1 
+            # else:
+            #     fila_desde = 1
+
+            # if fila < tablero.shape[0]:
+            #     fila_hasta = fila + 1  
+            # else:
+            #     fila_hasta = tablero.shape[0]
+
+            # if columna > 0:
+            #     col_desde = columna - 1 
+            # else:
+            #     col_desde = 1
+
+            # if columna < tablero.shape[1]:
+            #     col_hasta = columna + 1  
+            # else:
+            #     col_hasta = tablero.shape[1]
+
+            # adosadas = tablero[fila_desde:fila_hasta,col_desde:col_hasta]
+
+            # if not np.all(adosadas == ' '):
+            #     print(f"No puedo poner la pieza {pieza} porque hay otro barco")
+            #     return False
+                
+            tablero_temp[pieza]="O"
+            
         return tablero_temp
     
     def crea_barco_aleatorio(tablero, eslora = 4, num_intentos = 100):
@@ -54,7 +83,7 @@ class Tablero:
             fila = pieza_inicio[0]
             columna = pieza_inicio[1]
 
-            for i in range(1, eslora -1):
+            for i in range(eslora-1):
                 if orientacion == "N":
                     fila -= 1
                 elif orientacion == "S":
@@ -90,7 +119,7 @@ class Tablero:
 
         encabezado = "   " + " ".join([str(i) for i in range(num_columnas)])
         print(encabezado)
-
+        
         for fila in range(num_filas):
             fila_str = f"{fila} |" + "|".join(tablero[fila, :]) + "|"
             print(fila_str)
