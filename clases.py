@@ -22,44 +22,48 @@ class Tablero:
         tablero_temp = tablero.copy()
         num_max_filas = tablero.shape[0]
         num_max_columnas = tablero.shape[1]
+
         for pieza in barco:
             fila = pieza[0]
             columna = pieza[1]
             if fila < 0 or fila >= num_max_filas:
-                print(f"No puedo poner la pieza {pieza} porque se sale del tablero")
+                #print(f"No puedo poner la pieza {pieza} porque se sale del tablero")
                 return False
             if columna < 0 or columna >= num_max_columnas:
-                print(f"No puedo poner la pieza {pieza} porque se sale del tablero")
+                #print(f"No puedo poner la pieza {pieza} porque se sale del tablero")
                 return False
             if tablero[pieza] == "O" or tablero[pieza] == "X":
-                print(f"No puedo poner la pieza {pieza} porque hay otro barco")
+                #print(f"No puedo poner la pieza {pieza} porque hay otro barco")
                 return False
           
-            # if fila > 0:
-            #     fila_desde = fila - 1 
-            # else:
-            #     fila_desde = 1
+            if fila > 0:
+                fila_desde = fila - 1 
+            else:
+                fila_desde = 0
 
-            # if fila < tablero.shape[0]:
-            #     fila_hasta = fila + 1  
-            # else:
-            #     fila_hasta = tablero.shape[0]
+            if fila < tablero.shape[0] - 1:
+                fila_hasta = fila + 1  
+            else:
+                fila_hasta = tablero.shape[0] - 1
 
-            # if columna > 0:
-            #     col_desde = columna - 1 
-            # else:
-            #     col_desde = 1
+            if columna > 0:
+                col_desde = columna - 1 
+            else:
+                col_desde = 0
 
-            # if columna < tablero.shape[1]:
-            #     col_hasta = columna + 1  
-            # else:
-            #     col_hasta = tablero.shape[1]
+            if columna < tablero.shape[1] - 1:
+                col_hasta = columna + 1  
+            else:
+                col_hasta = tablero.shape[1] - 1
+            
+            fila_hasta = fila_hasta + 1
+            col_hasta = col_hasta + 1
 
-            # adosadas = tablero[fila_desde:fila_hasta,col_desde:col_hasta]
+            adosadas = tablero[fila_desde:fila_hasta,col_desde:col_hasta]
 
-            # if not np.all(adosadas == ' '):
-            #     print(f"No puedo poner la pieza {pieza} porque hay otro barco")
-            #     return False
+            if not np.all(adosadas == ' '):
+                #print(f"No puedo poner la pieza {pieza} porque hay otro barco")
+                return False
                 
             tablero_temp[pieza]="O"
             
