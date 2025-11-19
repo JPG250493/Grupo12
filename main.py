@@ -7,7 +7,7 @@ import numpy as np
 
 def main():
     
-    print("Bienvendido al juego de Hundir la Flota. ¿Estás listo? 🕹️\n")
+    print("\nBienvendido al juego de Hundir la Flota. ¿Estás listo? 🕹️\n")
     print("El objetivo 🎯 del juego es hundir todos los barcos del oponente.\n\n")
     
     id_jugador = input("Indica tu nombre de usuario: ")
@@ -25,19 +25,18 @@ def main():
         nveces = 4 - eslora + 1
         for i in range(nveces):
             tbl_jugador1.tablero_barcos = cls.Tablero.crea_barco_aleatorio(tbl_jugador1.tablero_barcos, eslora, 100)
-            tbl_jugador2.tablero_barcos = cls.Tablero.crea_barco_aleatorio(tbl_jugador2.tablero_barcos, eslora, 100)
-        break   
-
-    cls.Tablero.mostrar_tablero(tbl_jugador1.tablero_barcos)
+            tbl_jugador2.tablero_barcos = cls.Tablero.crea_barco_aleatorio(tbl_jugador2.tablero_barcos, eslora, 100)           
+        # break #Para que se coloque únicamente un barco de tamaño 4
+    cls.Tablero.mostrar_tablero(tbl_jugador1.tablero_barcos, tbl_jugador1.id_jugador)
 
     # Al terminar asteriscar esta línea para no ver el tablero de la CPU
-    #cls.Tablero.mostrar_tablero(tbl_jugador2.tablero_barcos)
+    # cls.Tablero.mostrar_tablero(tbl_jugador2.tablero_barcos, tbl_jugador2.id_jugador)
 
     while True:
                                             
         # Turno humano                        
         while True:
-
+            print(f"\n¡¡Es tu turno {tbl_jugador1.id_jugador}!!\n")
             fila = int(input("Indica la primera coordenada del disparo (entre 0,9): "))
 
             while fila < 0 or fila > (var.filas - 1) or not isinstance(fila, int):
@@ -50,11 +49,7 @@ def main():
 
             coordenada = (fila,columna)
 
-            cls.Tablero.recibir_disparo(tbl_jugador2.tablero_barcos, coordenada)
-
-            tbl_jugador1.tablero_disparos[coordenada] = tbl_jugador2.tablero_barcos[coordenada]
-
-            cls.Tablero.mostrar_tablero(tbl_jugador1.tablero_disparos)
+            funcion.acciones_del_tablero(coordenada, tbl_jugador1, tbl_jugador2)
             
             if not tbl_jugador2.tablero_barcos[coordenada] == 'X':
                 break
@@ -69,11 +64,7 @@ def main():
 
             coordenada = (fila, columna)
 
-            cls.Tablero.recibir_disparo(tbl_jugador1.tablero_barcos, coordenada)
-
-            tbl_jugador2.tablero_disparos[coordenada] = tbl_jugador1.tablero_barcos[coordenada]
-
-            cls.Tablero.mostrar_tablero(tbl_jugador2.tablero_disparos)
+            funcion.acciones_del_tablero(coordenada, tbl_jugador2, tbl_jugador1)
             
             if ( not tbl_jugador1.tablero_barcos[coordenada] == 'X' ):
                 break
@@ -82,8 +73,3 @@ def main():
         
 
 main()
-
-# aprovechar código con funciones
-# comentario indique coordenada variable ahora 0,9
-# emoji agua y lo que salga
-# ver si podemos poner lo del barco hundido

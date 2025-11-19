@@ -17,25 +17,7 @@ class Tablero:
         self.tablero_barcos = np.full((self.filas, self.columnas), " ")
         self.tablero_disparos = np.full((self.filas, self.columnas), " ")
     
-    def colocar_barco_plus(tablero, barco):
-        
-        tablero_temp = tablero.copy()
-        num_max_filas = tablero.shape[0]
-        num_max_columnas = tablero.shape[1]
-
-        for pieza in barco:
-            fila = pieza[0]
-            columna = pieza[1]
-            if fila < 0 or fila >= num_max_filas:
-                #print(f"No puedo poner la pieza {pieza} porque se sale del tablero")
-                return False
-            if columna < 0 or columna >= num_max_columnas:
-                #print(f"No puedo poner la pieza {pieza} porque se sale del tablero")
-                return False
-            if tablero[pieza] == "O" or tablero[pieza] == "X":
-                #print(f"No puedo poner la pieza {pieza} porque hay otro barco")
-                return False
-          
+    def colindantes (fila, columna, tablero):
             if fila > 0:
                 fila_desde = fila - 1 
             else:
@@ -60,6 +42,30 @@ class Tablero:
             col_hasta = col_hasta + 1
 
             adosadas = tablero[fila_desde:fila_hasta,col_desde:col_hasta]
+
+            return adosadas
+
+
+    def colocar_barco_plus(tablero, barco):
+        
+        tablero_temp = tablero.copy()
+        num_max_filas = tablero.shape[0]
+        num_max_columnas = tablero.shape[1]
+
+        for pieza in barco:
+            fila = pieza[0]
+            columna = pieza[1]
+            if fila < 0 or fila >= num_max_filas:
+                #print(f"No puedo poner la pieza {pieza} porque se sale del tablero")
+                return False
+            if columna < 0 or columna >= num_max_columnas:
+                #print(f"No puedo poner la pieza {pieza} porque se sale del tablero")
+                return False
+            if tablero[pieza] == "O" or tablero[pieza] == "X":
+                #print(f"No puedo poner la pieza {pieza} porque hay otro barco")
+                return False
+            
+            adosadas = Tablero.colindantes(fila, columna, tablero)
 
             if not np.all(adosadas == ' '):
                 #print(f"No puedo poner la pieza {pieza} porque hay otro barco")
@@ -105,22 +111,34 @@ class Tablero:
             if type(tablero_temp) == np.ndarray:
                 return tablero_temp
             
-            print("Intentar colocar otro barco, intento numero:", contador)
+            # print("Intentar colocar otro barco, intento numero:", contador)
 
-    def recibir_disparo(tablero, coordenada):
+    def recibir_disparo(tablero, coordenada, id):
         if tablero[coordenada] == "O":
+            
             tablero[coordenada] = "X"
-            print("Tocado")
+            print("Tocado💥\n")
+            adosadas = Tablero.colindantes(coordenada[0], coordenada[1], tablero)
+
+            if  np.all(adosadas != 'O'):                
+                print("¡¡Y hundido!!💀\n")
+
         elif tablero[coordenada] == " ":
             tablero[coordenada] = "-"
-            print("Agua")
+            print("Agua 💦\n")
+            if(id != 'CPU'):
+                print("Ahora es su turno\n")
         else:
-            print("Ya ha disparado aquí")
+            print("Ya ha disparado aquí\n")
 
-    def mostrar_tablero(tablero):
+    def mostrar_tablero(tablero, id):
         num_filas = tablero.shape[0]
         num_columnas = tablero.shape[1]
-
+        
+        if(id == 'CPU'):
+            print(f"    Tablero del jugador {id}🤖")
+        else:
+            print(f"    Tablero del jugador {id}")
         encabezado = "   " + " ".join([str(i) for i in range(num_columnas)])
         print(encabezado)
         
